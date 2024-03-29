@@ -1,0 +1,83 @@
+body {
+  background-color: black;
+  color: white;
+  margin: auto;
+  max-width: 75em;
+}
+
+.hero {
+  padding: 1.5em;
+}
+
+.hero h1 {
+  font-size: 5em;
+  margin: auto;
+}
+
+.hero p {
+  font-size: 1.5em;
+  padding-top: 1em;
+  margin: auto;
+}
+
+.intro {
+  padding: 1.5em;
+  margin: auto;
+}
+
+.intro p {
+  font-size: 1.25em;
+  padding: auto;
+  margin: auto;
+}
+
+.sections {
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: 2em;
+  padding-left: 1.5em;
+  padding-right: 1.5em;
+}
+
+.section {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+@media screen and (min-width: 600px) {
+  .section {
+    width: calc(33.33%);
+    height: 500px;
+  }
+  .section-title {
+    font-size: 3vw;
+  }
+}
+
+@media screen and (max-width: 599px) {
+  .section {
+    width: 100vw;
+    height: 500px;
+  }
+  .section-title {
+    font-size: 8vw;
+  }
+}
+
+.blockchain,
+.crypto,
+.nft {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.section-title:hover,
+.section-title:focus {
+  color: orange;
+}
+
+.section-title:active {
+  color: magenta;
+}
