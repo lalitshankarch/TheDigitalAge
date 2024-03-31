@@ -81,3 +81,12 @@ body {
 .section-title:active {
   color: magenta;
 }
+
+.footer {
+  margin: auto;
+  padding: 1em;
+}
+
+.footer p {
+  text-align: center;
+}
