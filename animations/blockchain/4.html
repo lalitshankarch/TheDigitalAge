@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation 1</title>
+    <script src="../../scripts/p5.min.js"></script>
+    <!-- Include the p5.js library -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let nodes = [];
+      const numNodes = 5;
+      const colors = ["#b000ff", "#ff0677", "#8900ff", "#00dd9f"];
+      const nodeSize = 60;
+      const textUpdateInterval = 50; // Time interval for text update in milliseconds
+      let currentNodes = 0;
+      let lastNodeAdded = 0;
+      let lastTextUpdate = 0;
+
+      function setup() {
+        createCanvas(400, 250);
+        frameRate(20); // Adjust frame rate for smoother text update
+      }
+
+      function draw() {
+        background("#000000");
+
+        // Draw lines between nodes
+        for (let i = 1; i < currentNodes; i++) {
+          stroke(255);
+          line(nodes[i - 1].x, nodes[i - 1].y, nodes[i].x, nodes[i].y);
+        }
+
+        // Draw nodes
+        for (let i = 0; i < currentNodes; i++) {
+          nodes[i].updateText();
+          nodes[i].display();
+        }
+
+        // Add new node if necessary
+        if (millis() - lastNodeAdded > 750 && currentNodes < numNodes) {
+          addNode();
+          lastNodeAdded = millis();
+        }
+        if (currentNodes == numNodes && millis() - lastNodeAdded > 750) {
+          currentNodes = 0;
+        }
+
+        // Draw "$$$" at the top in big letters
+        if (currentNodes == numNodes) {
+          fill(255);
+          textSize(50);
+          textAlign(CENTER, TOP);
+          text("₿₿₿", width / 2, 16);
+        }
+      }
+
+      function addNode() {
+        let x = map(currentNodes, 0, numNodes - 1, 50, width - 50);
+        let y = height / 2 + random(-20, 20);
+        let colorIndex;
+
+        // Choose a random color index ensuring it is different from previous nodes
+        do {
+          colorIndex = int(random(0, colors.length));
+        } while (
+          currentNodes > 0 &&
+          colorIndex === nodes[currentNodes - 1].colorIndex
+        );
+
+        let text = generateRandomText();
+        nodes.push(new Node(x, y, colorIndex, text));
+        currentNodes++;
+      }
+      function generateRandomText() {
+        let text = "";
+        for (let i = 0; i < 5; i++) {
+          text += String.fromCharCode(65 + int(random(26)));
+        }
+        return text;
+      }
+
+      class Node {
+        constructor(x, y, colorIndex, text) {
+          this.x = x;
+          this.y = y;
+          this.colorIndex = colorIndex;
+          this.text = text;
+          this.lastTextChange = millis();
+        }
+
+        updateText() {
+          if (millis() - this.lastTextChange > textUpdateInterval) {
+            this.text = generateRandomText();
+            this.lastTextChange = millis();
+          }
+        }
+
+        display() {
+          fill(colors[this.colorIndex]);
+          noStroke();
+          ellipse(this.x, this.y, nodeSize, nodeSize);
+          fill(255);
+          textSize(12);
+          textAlign(CENTER, CENTER);
+          text(this.text, this.x, this.y);
+        }
+      }
+    </script>
+  </body>
+</html>

@@ -2,7 +2,7 @@ body {
   background-color: black;
   color: white;
   margin: auto;
-  max-width: 75em;
+  max-width: 65em;
 }
 
 .hero {
@@ -11,6 +11,11 @@ body {
 
 .hero h1 {
   font-size: 5em;
+  margin: auto;
+}
+
+.hero h2 {
+  font-size: 3.5em;
   margin: auto;
 }
 
@@ -73,15 +78,6 @@ body {
   align-items: center;
 }
 
-.section-title:hover,
-.section-title:focus {
-  color: orange;
-}
-
-.section-title:active {
-  color: magenta;
-}
-
 .footer {
   margin: auto;
   padding: 1em;
@@ -89,4 +85,57 @@ body {
 
 .footer p {
   text-align: center;
+}
+
+.title {
+  padding: 1.5em;
+  margin: auto;
+}
+
+.title h2 {
+  font-size: 2em;
+  margin: auto;
+}
+
+.text {
+  padding: 1.5em;
+  padding-top: 0;
+  margin: auto;
+}
+
+.text p {
+  font-size: 1.125em;
+  padding: auto;
+  margin: auto;
+}
+
+iframe {
+  display: block;
+  margin: auto;
+}
+
+img {
+  display: block;
+  margin: auto;
+}
+
+a {
+  color: white;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: none;
+}
+
+a:active {
+  color: orangered;
+  text-decoration: none;
 }

@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation 1</title>
+    <script src="../../scripts/p5.min.js"></script>
+    <!-- Include the p5.js library -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let backgroundColor = "#000000";
+      let blockColor = ["#b000ff", "#ff0677", "#8900ff", "#00dd9f"];
+      let blockWidth = 200;
+      let blockHeight = 100;
+      let blockData = "Click to tamper with block data"; // Initial data in the block
+      let currentHash = ""; // Current hash of the block data
+      let currentColor = "#b000ff"; // Current color of the block
+
+      function setup() {
+        createCanvas(400, 300);
+        currentHash = hashData(blockData);
+      }
+
+      function draw() {
+        background(backgroundColor);
+        drawBlock(blockData, currentHash, currentColor);
+      }
+
+      function drawBlock(data, hash, color) {
+        // Draw block
+        fill(color);
+        rect(100, 150, blockWidth, blockHeight);
+
+        // Draw block data
+        fill(255);
+        textSize(20);
+        textAlign(CENTER, CENTER);
+        text(data, 100 + blockWidth / 2, 75);
+
+        // Draw hash code
+        fill(255);
+        textSize(16);
+        text("Hash: " + hash, 100 + blockWidth / 2, 150 + blockHeight / 2 + 20);
+      }
+
+      // Function to calculate hash of data
+      function hashData(data) {
+        let hash = 0;
+        for (let i = 0; i < data.length; i++) {
+          hash = (hash << 5) + data.charCodeAt(i);
+          hash = hash & hash; // Convert to 32bit integer
+          hash = abs(hash);
+        }
+        return hash.toString(16);
+      }
+
+      // Change data, color, and recalculate hash when mouse is pressed
+      function mousePressed() {
+        blockData = "Data changed! " + random(1000);
+        currentHash = hashData(blockData);
+        currentColor = blockColor[Math.floor(random(blockColor.length))];
+      }
+    </script>
+  </body>
+</html>

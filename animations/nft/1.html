@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation 1</title>
+    <script src="../../scripts/p5.min.js"></script>
+    <!-- Include the p5.js library -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const contentColors = ["#b000ff", "#ff0677", "#8900ff", "#00dd9f"];
+      const artUpdateInterval = 1000; // Time interval for updating art in milliseconds
+
+      function setup() {
+        createCanvas(400, 400);
+        frameRate(1); // Set frame rate to update art every second
+        generateRandomArt(); // Generate initial random art
+      }
+
+      function draw() {
+        // Background color
+        background("#000000");
+      }
+
+      function generateRandomArt() {
+        // Generate random art
+        let shape = int(random(3)); // Randomly choose a shape (0: ellipse, 1: rectangle, 2: triangle)
+        let colorIndex = int(random(contentColors.length)); // Randomly choose a color from the content colors
+
+        // Randomly position the shape
+        let x = random(width);
+        let y = random(height);
+
+        // Randomly determine shape size
+        let shapeSize = random(50, 150);
+
+        // Draw the shape based on the randomly chosen parameters
+        fill(contentColors[colorIndex]);
+        noStroke();
+        if (shape === 0) {
+          ellipse(x, y, shapeSize, shapeSize); // Draw ellipse
+        } else if (shape === 1) {
+          rect(x, y, shapeSize, shapeSize); // Draw rectangle
+        } else if (shape === 2) {
+          triangle(x, y, x + shapeSize, y, x + shapeSize / 2, y + shapeSize); // Draw triangle
+        }
+      }
+
+      // Automatically update the art every 1 second
+      setInterval(generateRandomArt, artUpdateInterval);
+    </script>
+  </body>
+</html>

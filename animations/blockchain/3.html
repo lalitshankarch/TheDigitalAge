@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation 1</title>
+    <script src="../../scripts/p5.min.js"></script>
+    <!-- Include the p5.js library -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let nodes = [];
+      const numNodes = 6;
+      const colors = ["#b000ff", "#ff0677", "#8900ff", "#00dd9f"];
+      const nodeSize = 45;
+      const colorChangeInterval = 1000; // Time interval for color change in milliseconds
+
+      function setup() {
+        createCanvas(400, 250);
+        for (let i = 0; i < numNodes; i++) {
+          let x = map(i, 0, numNodes - 1, 50, width - 50);
+          let y = height / 2 + random(-25, 25);
+          let colorIndex = int(random(colors.length));
+          nodes.push(new Node(x, y, colorIndex));
+        }
+      }
+
+      function draw() {
+        background(0);
+        for (let i = 0; i < nodes.length; i++) {
+          nodes[i].update();
+          nodes[i].display();
+
+          // Connect this node to the next one
+          if (i < nodes.length - 1) {
+            stroke(255);
+            line(
+              nodes[i].x + nodeSize / 2,
+              nodes[i].y,
+              nodes[i + 1].x - nodeSize / 2,
+              nodes[i + 1].y
+            );
+          }
+        }
+      }
+
+      class Node {
+        constructor(x, y, colorIndex) {
+          this.x = x;
+          this.y = y;
+          this.colorIndex = colorIndex;
+          this.targetColorIndex = colorIndex; // Initialize target color index
+          this.lastColorChange = millis();
+        }
+
+        update() {
+          if (millis() - this.lastColorChange > colorChangeInterval) {
+            this.targetColorIndex = int(random(colors.length));
+            this.lastColorChange = millis();
+          }
+          // Smoothly transition color
+          let startColor = color(colors[this.colorIndex]);
+          let endColor = color(colors[this.targetColorIndex]);
+          let lerpedColor = lerpColor(
+            startColor,
+            endColor,
+            (millis() - this.lastColorChange) / colorChangeInterval
+          );
+          this.color = lerpedColor;
+        }
+
+        display() {
+          fill(this.color);
+          noStroke();
+          ellipse(this.x, this.y, nodeSize, nodeSize);
+        }
+      }
+    </script>
+  </body>
+</html>

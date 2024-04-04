@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation 1</title>
+    <script src="../../scripts/p5.min.js"></script>
+    <!-- Include the p5.js library -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let blocks = [];
+      let colors = ["#b000ff", "#ff0677", "#8900ff", "#00dd9f"];
+      let currentColor = 0;
+      let startX; // Starting x-coordinate for the chain
+      let spacing = 10; // Spacing between blocks
+
+      function setup() {
+        createCanvas(400, 250);
+        frameRate(15);
+        startX = 0; // Set the starting x-coordinate to the left side of the canvas
+      }
+
+      function draw() {
+        background("#000000");
+
+        // Add a new block to the chain
+        if (frameCount % 6 === 0) {
+          let x = startX;
+          let y = height / 2;
+          if (blocks.length > 0) {
+            let lastBlock = blocks[blocks.length - 1];
+            x = lastBlock.x + lastBlock.size + spacing; // Add spacing between blocks
+          }
+          let size = 40 + random(-20, 10);
+          let newBlock = {
+            x: x,
+            y: y,
+            size: size,
+            color: colors[currentColor],
+          };
+          blocks.push(newBlock);
+          currentColor = (currentColor + 1) % colors.length;
+
+          // Restart the animation if the chain reaches the right side
+          if (x + size > width) {
+            blocks = [];
+            startX = 0; // Reset the starting x-coordinate
+          }
+        }
+
+        // Draw the chain
+        for (let i = 0; i < blocks.length; i++) {
+          let block = blocks[i];
+          fill(block.color);
+          noStroke();
+          rect(block.x, block.y - block.size / 2, block.size, block.size, 5);
+
+          // Draw the stem to connect the blocks
+          if (i > 0) {
+            let prevBlock = blocks[i - 1];
+            stroke("#ffffff");
+            strokeWeight(2);
+            line(block.x, block.y, prevBlock.x + prevBlock.size, prevBlock.y);
+          }
+        }
+      }
+    </script>
+  </body>
+</html>

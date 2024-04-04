@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation 1</title>
+    <script src="../../scripts/p5.min.js"></script>
+    <!-- Include the p5.js library -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      let brickWidth;
+      let brickHeight;
+      let bricks;
+      let ball;
+      let gameOver;
+      let restartMessage;
+
+      const numRows = 5;
+      const numCols = 3;
+      const brickPadding = 10;
+      const brickColors = ["#b000ff", "#ff0677", "#8900ff", "#00dd9f"];
+
+      function setup() {
+        createCanvas(400, 300);
+        brickWidth = width / numCols - brickPadding;
+        brickHeight = 40;
+        createBricks();
+        ball = new Ball(width / 2, height / 2);
+        gameOver = false;
+      }
+
+      function draw() {
+        background("#000000");
+
+        if (!gameOver) {
+          ball.move();
+          ball.bounce();
+          ball.display();
+
+          for (let i = 0; i < bricks.length; i++) {
+            bricks[i].display();
+            if (ball.intersects(bricks[i])) {
+              ball.dy *= -1;
+              bricks.splice(i, 1);
+            }
+          }
+
+          if (bricks.length === 0) {
+            gameOver = true;
+            restartMessage = "Decentralization achieved";
+            textSize(20);
+            textAlign(CENTER, CENTER);
+            fill(255);
+            text(restartMessage, width / 2, height / 2);
+            setTimeout(restartGame, 2000); // Pause for 2 seconds before restarting
+          }
+        } else {
+          textSize(20);
+          textAlign(CENTER, CENTER);
+          fill(255);
+          text(restartMessage, width / 2, height / 2);
+        }
+      }
+
+      function createBricks() {
+        bricks = [];
+        for (let i = 0; i < numCols; i++) {
+          for (let j = 0; j < numRows; j++) {
+            let x = i * (brickWidth + brickPadding);
+            let y = j * (brickHeight + brickPadding);
+            let currency = random(["₺", "₹", "¥", "€", "$"]);
+            let color = random(brickColors);
+            bricks.push(
+              new Brick(x, y, brickWidth, brickHeight, color, currency)
+            );
+          }
+        }
+      }
+
+      function restartGame() {
+        gameOver = false;
+        createBricks();
+        ball.reset();
+      }
+
+      class Ball {
+        constructor(x, y) {
+          this.x = x;
+          this.y = y;
+          this.radius = 10;
+          this.dx = random(-5, 5);
+          this.dy = random(-5, 5);
+        }
+
+        move() {
+          this.x += this.dx;
+          this.y += this.dy;
+        }
+
+        bounce() {
+          if (this.x - this.radius < 0 || this.x + this.radius > width) {
+            this.dx *= -1;
+          }
+          if (this.y - this.radius < 0 || this.y + this.radius > height) {
+            this.dy *= -1;
+          }
+        }
+
+        intersects(obj) {
+          let distX = abs(this.x - obj.x - obj.width / 2);
+          let distY = abs(this.y - obj.y - obj.height / 2);
+
+          if (
+            distX > obj.width / 2 + this.radius ||
+            distY > obj.height / 2 + this.radius
+          ) {
+            return false;
+          }
+          if (distX <= obj.width / 2 || distY <= obj.height / 2) {
+            return true;
+          }
+          let dx = distX - obj.width / 2;
+          let dy = distY - obj.height / 2;
+          return dx * dx + dy * dy <= this.radius * this.radius;
+        }
+
+        display() {
+          fill(0);
+          stroke(255, 255, 0);
+          strokeWeight(0);
+          ellipse(this.x, this.y, this.radius * 2);
+          textSize(25);
+          textAlign(CENTER, CENTER);
+          fill(255);
+          text("₿", this.x, this.y);
+        }
+
+        reset() {
+          this.x = width / 2;
+          this.y = height / 2;
+          this.dx = random(-5, 5);
+          this.dy = random(-5, 5);
+        }
+      }
+
+      class Brick {
+        constructor(x, y, width, height, color, currency) {
+          this.x = x;
+          this.y = y;
+          this.width = width;
+          this.height = height;
+          this.color = color;
+          this.currency = currency;
+        }
+
+        display() {
+          fill(this.color);
+          rect(this.x, this.y, this.width, this.height);
+          textSize(16);
+          textAlign(CENTER, CENTER);
+          fill(255);
+          text(
+            this.currency,
+            this.x + this.width / 2,
+            this.y + this.height / 2
+          );
+        }
+      }
+    </script>
+  </body>
+</html>

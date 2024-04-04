@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Animation 1</title>
+    <script src="../../scripts/p5.min.js"></script>
+    <!-- Include the p5.js library -->
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+      }
+      canvas {
+        display: block;
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const numCols = 10; // Number of columns
+      const numRows = 10; // Number of rows
+      const charSize = 20; // Size of characters
+      const charSpeed = 1; // Speed of character movement
+      const chars = ["Ɖ", "₿", "Ξ", "Ł"]; // Characters to display
+      let charPositions = []; // Array to store character positions
+      let charColors = []; // Array to store character colors
+
+      function setup() {
+        createCanvas(400, 300);
+        frameRate(30);
+
+        // Initialize character positions and colors
+        for (let i = 0; i < numRows; i++) {
+          charPositions.push([]);
+          charColors.push([]);
+          for (let j = 0; j < numCols; j++) {
+            charPositions[i].push(random(height));
+            charColors[i].push(
+              random(["#b000ff", "#ff0677", "#8900ff", "#00dd9f"])
+            );
+          }
+        }
+      }
+
+      function draw() {
+        background("#000000");
+
+        // Draw characters and animate
+        for (let i = 0; i < numRows; i++) {
+          for (let j = 0; j < numCols; j++) {
+            // Set color
+            fill(charColors[i][j]);
+
+            // Calculate character position
+            let x = j * (width / numCols);
+            let y = charPositions[i][j];
+
+            // Draw character
+            textSize(charSize);
+            text(chars[i % chars.length], x, y);
+
+            // Move character position upwards
+            charPositions[i][j] -= charSpeed;
+
+            // Reset character position when it goes beyond the canvas
+            if (charPositions[i][j] < -charSize) {
+              charPositions[i][j] = height;
+              charColors[i][j] = random([
+                "#b000ff",
+                "#ff0677",
+                "#8900ff",
+                "#00dd9f",
+              ]);
+            }
+          }
+        }
+      }
+    </script>
+  </body>
+</html>
