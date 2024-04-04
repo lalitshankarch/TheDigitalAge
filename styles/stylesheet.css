@@ -89,6 +89,7 @@ body {
 
 .title {
   padding: 1.5em;
+  padding-top: 0;
   margin: auto;
 }
 
