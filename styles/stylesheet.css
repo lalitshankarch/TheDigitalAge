@@ -140,3 +140,8 @@ a:active {
   color: orangered;
   text-decoration: none;
 }
+
+.flourish-embed {
+  max-width: 600px;
+  margin: auto;
+}
